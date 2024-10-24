@@ -1,0 +1,65 @@
+- Request:     Request là một thông điệp được gửi từ client (người dùng, trình duyệt, hoặc ứng dụng) đến server (máy chủ)
+               để yêu cầu dữ liệu hoặc thực hiện một thao tác nào đó. Trong ứng dụng web, yêu cầu này thường sử dụng giao thức HTTP hoặc HTTPS.
+
+               Cấu trúc của một request bao gồm:
+               Request URL: Địa chỉ URL mà client yêu cầu (ví dụ: https://example.com/api/users).
+               HTTP Method: Phương thức HTTP
+               Headers: Các thông tin bổ sung như loại dữ liệu mà client gửi đi hoặc có thể nhận về.
+               Body: Chứa dữ liệu được gửi lên server (ví dụ: khi gửi form hoặc JSON).
+
+               + Vi du:
+
+                        GET /api/users HTTP/1.1
+                        Host: example.com
+                        Authorization: Bearer <token>
+                        Content-Type: application/json
+
+================================================================================================================================
+
+- Response:    Response là thông điệp mà server trả về cho client sau khi xử lý một request. Response bao gồm kết quả của việc xử lý (có thể là dữ liệu,
+               trạng thái thành công hoặc lỗi).
+
+               Cấu trúc của một response bao gồm:
+               Status Code: Mã trạng thái phản ánh kết quả của yêu cầu, ví dụ:
+               200 OK: Thành công.
+               404 Not Found: Không tìm thấy tài nguyên.
+               500 Internal Server Error: Lỗi máy chủ.
+               Headers: Thông tin bổ sung như loại nội dung trả về.
+               Body: Dữ liệu thực tế mà server trả về (thường ở dạng JSON hoặc HTML)
+
+               + Vi du:
+
+                        HTTP/1.1 200 OK
+                        Content-Type: application/json
+
+                        [
+                            {
+                                "id": 1,
+                                "name": "quan",
+                                "email": "quan@example.com"
+                            }
+                        ]
+
+
+================================================================================================================================
+
+- HTTP Method: HTTP method là các hành động mà client có thể yêu cầu server thực hiện. Các phương thức HTTP chính bao gồm:
+
+               GET: Lấy dữ liệu từ server mà không thay đổi trạng thái của nó. Ví dụ, lấy thông tin người dùng.
+               Ví dụ: GET /api/users/1
+               POST: Gửi dữ liệu tới server để tạo mới một tài nguyên. Ví dụ, tạo người dùng mới.
+               Ví dụ: POST /api/users
+               PUT: Gửi dữ liệu tới server để cập nhật toàn bộ một tài nguyên hiện có.
+               Ví dụ: PUT /api/users/1
+               PATCH: Gửi dữ liệu tới server để cập nhật một phần của tài nguyên.
+               Ví dụ: PATCH /api/users/1
+               DELETE: Xóa một tài nguyên từ server.
+               Ví dụ: DELETE /api/users/1
+
+================================================================================================================================
+
+- API:         API là tập hợp các quy tắc và giao thức mà các ứng dụng sử dụng để giao tiếp với nhau.
+               Trong phát triển web, API thường đề cập đến Web API, là các điểm cuối (endpoint) trên server mà client có thể gọi để gửi yêu cầu và nhận phản hồi (thường qua HTTP).
+               API cho phép các ứng dụng khác nhau có thể trao đổi dữ liệu hoặc thực hiện các thao tác mà không cần biết chi tiết nội bộ của nhau.
+
+

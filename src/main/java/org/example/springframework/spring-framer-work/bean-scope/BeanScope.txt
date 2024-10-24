@@ -1,0 +1,247 @@
++ Bean Scope: trong Spring Framework xác định vòng đời và phạm vi sử dụng của các bean được quản lý bởi Spring container.
+              Nó quyết định khi nào một bean được tạo, cách nó được chia sẻ, và khi nào nó bị hủy.
+
++ Cac loai bean: 1. Singleton (Mặc định):
+
+                    Một bean được tạo ra chỉ một lần cho toàn bộ Spring container.
+                    Tất cả các yêu cầu tới bean đó đều sẽ chia sẻ cùng một instance.
+                    Phù hợp với các bean không giữ trạng thái hoặc không có sự phụ thuộc tới các tham số cụ thể của từng người dùng.
+
+                    + Vi du:    @Component
+                                public class MySingletonBean {
+                                    public MySingletonBean() {
+                                        System.out.println("MySingletonBean instance created");
+                                    }
+                                }
+                                Khi gọi bean này nhiều lần trong ứng dụng, chỉ có một instance được tạo ra.
+
+                                ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+                                MySingletonBean bean1 = context.getBean(MySingletonBean.class);
+                                MySi
+                                ngletonBean bean2 = context.getBean(MySingletonBean.class);
+
+                 2. Prototype:
+
+                    Một bean mới sẽ được tạo ra mỗi lần nó được yêu cầu.
+                    Không chia sẻ instance giữa các yêu cầu.
+                    Phù hợp với các bean có trạng thái hoặc các trường hợp mà mỗi yêu cầu cần một instance riêng biệt.
+
+                    + Vi du: @Component
+                             @Scope("prototype")
+                             public class MyPrototypeBean {
+                                 public MyPrototypeBean() {
+                                     System.out.println("MyPrototypeBean instance created");
+                                 }
+                             }
+
+                             MyPrototypeBean bean1 = context.getBean(MyPrototypeBean.class);
+                             MyPrototypeBean bean2 = context.getBean(MyPrototypeBean.class);
+
+                 3. Request (chỉ sử dụng trong Spring MVC hoặc web application):
+
+                    Mỗi yêu cầu HTTP sẽ tạo ra một instance mới của bean.
+                    Bean sẽ chỉ tồn tại trong vòng đời của một request HTTP.
+
+                    @Component
+                    @RequestScope
+                    public class MyRequestBean {
+                        public MyRequestBean() {
+                            System.out.println("MyRequestBean instance created");
+                        }
+                    }
+
+                    @RestController
+                    public class MyController {
+                        @Autowired
+                        private MyRequestBean myRequestBean;
+
+                        @GetMapping("/example")
+                        public String example() {
+                            // Một instance của MyRequestBean sẽ được tạo cho mỗi request
+                            return "Request handled";
+                        }
+                    }
+
+                 4. Session (chỉ sử dụng trong Spring MVC hoặc web application):
+
+                    Một bean được tạo ra cho mỗi phiên (session) HTTP.
+                    Bean sẽ tồn tại trong suốt thời gian của session người dùng.
+
+                    @Component
+                    @SessionScope
+                    public class MySessionBean {
+                        public MySessionBean() {
+                            System.out.println("MySessionBean instance created");
+                        }
+                    }
+
+                    @RestController
+                    public class SessionController {
+                        @Autowired
+                        private MySessionBean mySessionBean;
+
+                        @GetMapping("/session")
+                        public String handleSession() {
+                            return "Session active";
+                        }
+                    }
+
+                 5. Application:
+
+                    Một bean được tạo ra một lần cho toàn bộ ứng dụng web, chia sẻ cho tất cả các servlet và session.
+
+                    @Component
+                    @ApplicationScope
+                    public class MyApplicationBean {
+                        public MyApplicationBean() {
+                            System.out.println("MyApplicationBean instance created");
+                        }
+                    }
+
+                    @RestController
+                    public class AppController {
+                        @Autowired
+                        private MyApplicationBean myApplicationBean;
+
+                        @GetMapping("/app")
+                        public String handleApp() {
+                            return "Application level scope";
+                        }
+                    }
+
+                 6. WebSocket:
+
+                    Mỗi phiên WebSocket sẽ có một instance bean mới.
+
+                    @Component
+                    @Scope("websocket")
+                    public class MyWebSocketBean extends TextWebSocketHandler {
+                        public MyWebSocketBean() {
+                            System.out.println("MyWebSocketBean instance created for WebSocket session");
+                        }
+                    }
+
+                    @Configuration
+                    @EnableWebSocket
+                    public class WebSocketConfig implements WebSocketConfigurer {
+                        @Override
+                        public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+                            registry.addHandler(new MyWebSocketBean(), "/ws").setAllowedOrigins("*");
+                        }
+                    }
+
+
+Muc dich:  Việc tạo ra nhiều loại bean scope trong Spring Framework là để hỗ trợ việc quản lý vòng đời của các bean một cách linh hoạt
+           phù hợp với các yêu cầu cụ thể của ứng dụng.
+
+         + Tối ưu tài nguyên và hiệu năng, tùy chỉnh vòng đời theo yêu cầu cụ thể, tăng tính linh hoạt và dễ bảo trì.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

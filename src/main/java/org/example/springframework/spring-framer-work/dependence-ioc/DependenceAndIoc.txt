@@ -1,0 +1,89 @@
+Dependency Injection (DI):    - Một mẫu thiết kế (design pattern) được sử dụng để quản lý các phụ thuộc (dependency) của một đối tượng.
+                              - Thay vì để một đối tượng tự khởi tạo và quản lý các phụ thuộc của nó, DI sẽ cung cấp các phụ thuộc này từ bên ngoài.
+
+                              - Tóm lại là không can khoi tao lai khi có thay doi tu class cua obj, ma no tu quan ly boi IOC.
+
+                              - Co 3 cach: + Constructor Injection: Các phụ thuộc được truyền vào thông qua constructor.
+                                           + Setter Injection: Các phụ thuộc được tiêm vào thông qua các phương thức setter.
+                                           + Field Injection: Các phụ thuộc được tiêm thẳng vào các thuộc tính
+
+
+                              - Vi du:   public class Car {
+                                             private Engine engine;
+
+                                             // Constructor Injection, noi chung la khi dung thi se khong phai tao 1 instance mới thong qua tu khoa new.
+                                             public Car(Engine engine) {
+                                                 this.engine = engine;
+                                             }
+
+                                             public void start() {
+                                                 engine.start();
+                                             }
+                                         }
+
+====================================================================================================================================
+
+Invertion of Control:    là một nguyên lý thiết kế trong đó quyền kiểm soát việc khởi tạo, quản lý vòng đời và các phụ thuộc của đối tượng
+                         được đảo ngược từ chính đối tượng đó sang một container bên ngoài (thường là IoC Container).
+
+
+                        - Khi 1 lop duoc danh dau la:
+
+                                + @Service, @Component, @Repository, @Controller cac anotation nay se duoc quan li boi IoC container
+                                  Spring se phat hien va khoi tao nhu cac bean,
+
+
+                        - Tom lai: nghĩa là khi 1 lớp được đánh đấu các anotation của IoC thì nó sẽ được IoC container se chiu trach nhien khoi tao va quản lí
+                                   tự động inject cac phu thuoc vào các lớp gọi đến cụ thể là @Autowired
+
+====================================================================================================================================
+
+
+Spring Bean
+                        - Trong Spring, một bean là một đối tượng được quản lý bởi Spring IoC Container.
+                        - Bean là trung tâm của ứng dụng Spring, nơi các đối tượng được tạo, quản lý, và tiêm phụ thuộc vào các thành phần khác của ứng dụng.
+
+                        -  Life Cycle của Spring Bean (Vòng đời của Bean)
+                           Vòng đời của một bean trong Spring bao gồm các bước chính sau:
+
+                           Instantiation (Khởi tạo):
+
+                           Spring IoC Container khởi tạo bean bằng cách gọi constructor của lớp tương ứng hoặc thông qua các phương thức @Bean.
+                           Populating Properties (Tiêm phụ thuộc):
+
+                           Sau khi khởi tạo, Spring sẽ tiêm các phụ thuộc vào bean (các đối tượng cần thiết) thông qua @Autowired, constructor, hoặc setter.
+                           Bean Name Assignment (Gán tên cho bean):
+
+                           IoC Container gán tên cho bean để quản lý và gọi khi cần thiết.
+                           Bean Initialization (Khởi tạo):
+
+                           Nếu bean có phương thức khởi tạo tùy chỉnh (annotated @PostConstruct hoặc khai báo trong cấu hình init-method), phương thức này sẽ được gọi sau khi tiêm các phụ thuộc.
+                           Bean Ready (Bean sẵn sàng sử dụng):
+
+                           Sau quá trình khởi tạo, bean sẽ sẵn sàng để sử dụng trong ứng dụng.
+                           Bean Destruction (Hủy bean):
+
+                           Khi container bị tắt hoặc bean không còn được sử dụng, Spring sẽ gọi phương thức hủy (annotated @PreDestroy hoặc khai báo trong cấu hình destroy-method) để giải phóng tài nguyên.
+
+
+Vong doi cua 1 bean:    Life Cycle của Spring Bean (Vòng đời của Bean)
+                        Vòng đời của một bean trong Spring bao gồm các bước chính sau:
+
+                      - Instantiation (Khởi tạo):
+                          Spring IoC Container khởi tạo bean bằng cách gọi constructor của lớp tương ứng hoặc thông qua các phương thức @Bean.
+
+                      - Populating Properties (Tiêm phụ thuộc):
+                          Sau khi khởi tạo, Spring sẽ tiêm các phụ thuộc vào bean (các đối tượng cần thiết) thông qua @Autowired, constructor, hoặc setter.
+
+                      - Bean Name Assignment (Gán tên cho bean):
+                          IoC Container gán tên cho bean để quản lý và gọi khi cần thiết.
+
+                      - Bean Initialization (Khởi tạo):
+                          Nếu bean có phương thức khởi tạo tùy chỉnh (annotated @PostConstruct hoặc khai báo trong cấu hình init-method), phương thức này sẽ được gọi sau khi tiêm các phụ thuộc.
+
+                      - Bean Ready (Bean sẵn sàng sử dụng):
+                          Sau quá trình khởi tạo, bean sẽ sẵn sàng để sử dụng trong ứng dụng.
+
+                      - Bean Destruction (Hủy bean):
+                          Khi container bị tắt hoặc bean không còn được sử dụng, Spring sẽ gọi phương thức hủy
+                          (annotated @PreDestroy hoặc khai báo trong cấu hình destroy-method) để giải phóng tài nguyên.

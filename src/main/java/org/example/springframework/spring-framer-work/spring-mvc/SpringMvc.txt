@@ -1,0 +1,14 @@
+Spring MVC:     -   Xay dung theo mo hinh MVC:  + Model: dai dien cho logic, cac entity
+                                                + View: giao dien nguoi dung
+                                                + Controller: xu li yeu cau nguoi dung, va gui den View
+
+                - Nguyen li:   Khi nguoi dung tu Client gui yeu cau den backend thi Controller se xem yeu cau do la gi
+                               sau do goi den model va model sẽ gửi lại cho Controller và Controller trả về  view.
+
+                               Client (Người dùng)
+                                   |
+                                   V
+                               Controller <----> Model (Xử lý nghiệp vụ và dữ liệu)
+                                   |
+                                   V
+                               View (Hiển thị giao diện người dùng)

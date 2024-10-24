@@ -1,0 +1,4 @@
+Springboot:    - Spring Boot là một phần mở rộng của Spring Framework, được thiết kế để giúp đơn giản hóa quá trình phát triển các ứng dụng Java.
+               - Spring Boot tự động cấu hình các thành phần của Spring và cung cấp môi trường phát triển nhanh chóng, giúp giảm thiểu công việc cấu hình thủ công,
+                 đặc biệt trong các ứng dụng web và microservices.
+               - Nói chung là Springboot như 1 nơi để tích hợp mấy cái còn lại, kiểu như 1 cái container.
