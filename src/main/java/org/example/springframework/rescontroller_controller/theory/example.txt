@@ -1,0 +1,113 @@
+@Controller:
+   + Định nghĩa: @Controller được sử dụng để xác định một Spring MVC controller truyền thống.
+   + Trả về View: các phương thức xử lý sẽ trả về tên của một View (như JSP, Thymeleaf, v.v.).
+   + Muốn trả ve du lieu duoi dang JSON hoac XML thi se can phai dung @ResponseBody
+   + Khi nao can dieu huong trang thi nen dung
+   + Vi du:
+
+            @Controller
+            public class MyController {
+
+                @GetMapping("/home")
+                public String home() {
+                    // Trả về view "home" (có thể là một file JSP hoặc Thymeleaf)
+                    return "home";
+                }
+
+                @GetMapping("/api/data")
+                @ResponseBody
+                public DataObject getData() {
+                    // Trả về JSON (do có @ResponseBody), nếu không sẽ trả về view
+                    return new DataObject("Sample Data");
+                }
+            }
+
+======================================================================================================
+
+@RestController:
+   + La ket hop ca 2 @Controller va @ResponseBody va tao ra api va chi tra ve du lieu JSON hoac XML
+   + Vi du:
+
+            @RestController
+            public class MyRestController {
+
+                @GetMapping("/api/data")
+                public DataObject getData() {
+                    return new DataObject("Sample Data");
+                }
+            }
+
+======================================================================================================
+
+Routing: + Là một cơ chế để định tuyến yêu cầu HTTP, cho phép phân chia luồng xử lý các yêu cầu đến các endpoint khác nhau.
+         + annotation như @RequestMapping, @GetMapping, @PostMapping, @PutMapping, @DeleteMapping, ...
+
+         @RestController
+         @RequestMapping("/api")
+         public class ApiController {
+
+             @GetMapping("/hello")
+             public String hello() {
+                 return "Hello, World!";
+             }
+
+             @PostMapping("/submit")
+             public String submitData() {
+                 return "Data submitted!";
+             }
+         }
+
+======================================================================================================
+
+Params (Query Parameters)
+Định nghĩa: Là các cặp key-value được gửi kèm trong URL dưới dạng chuỗi truy vấn sau dấu ?, và mỗi cặp key-value ngăn cách bởi dấu &.
+            Dùng để gửi các thông tin lọc, phân trang, tìm kiếm
+
+            Vi du: @RestController
+                   @RequestMapping("/api")
+                   public class ProductController {
+
+                       @GetMapping("/products")
+                       public String getProducts(@RequestParam("category") String category, @RequestParam("sort") String sort) {
+                           return "Category: " + category + ", Sort by: " + sort;
+                       }
+                   }
+
+
+Request Body: Là phần dữ liệu nằm trong nội dung của request, thường được sử dụng trong các yêu cầu POST, PUT, hoặc PATCH
+
+              @RestController
+              @RequestMapping("/api/products")
+              public class ProductController {
+
+                  @PostMapping("/create")
+                  public String createProduct(@RequestBody Product product) {
+                      return "Product created: " + product.getName() + " - $" + product.getPrice();
+                  }
+              }
+
+
+Path Variable là các biến được truyền trực tiếp trong URL dung de dinh danh tai nguyen.
+
+              @RestController
+              @RequestMapping("/api/products")
+              public class ProductController {
+
+                  @GetMapping("/{productId}")
+                  public String getProduct(@PathVariable("productId") int productId) {
+                      return "Product ID: " + productId;
+                  }
+              }
+
+
+Headers chứa các thông tin bổ sung được gửi cùng với yêu cầu HTTP, như thông tin xác thực, thông tin về client, định dạng dữ liệu
+
+             @RestController
+             @RequestMapping("/api/products")
+             public class ProductController {
+
+                 @GetMapping("/auth-check")
+                 public String checkAuth(@RequestHeader("Authorization") String authHeader) {
+                     return "Authorization Header: " + authHeader;
+                 }
+             }
