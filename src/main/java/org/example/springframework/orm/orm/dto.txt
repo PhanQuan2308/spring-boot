@@ -1,0 +1,23 @@
+//  DTO (Data Transfer Object) và Entity: giúp tách biệt logic của database với các tầng khác trong ứng dụng.
+//        - Có 2 cách:  MapStruct hoặc ModelMapper.
+
+                    + Vi du: public class UserDTO {
+                                    private Long id;
+                                    private String name;
+                                    private String email;
+                                    // getters and setters
+                                }
+
+                                @Entity
+                                public class User {
+                                    private Long id;
+                                    private String name;
+                                    private String email;
+                                    // getters and setters
+                                }
+
+//
+//
+//
+//
+//
