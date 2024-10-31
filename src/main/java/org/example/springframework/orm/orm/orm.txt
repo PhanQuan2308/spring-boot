@@ -1,0 +1,47 @@
+ORM (Object-Relational Mapping): + Tích hợp mạnh mẽ với Hibernate, Hibernate tich hop san trong Spring Data JPA.
+                                 + Chỉ cần chú thích các lớp với các annotation như @Entity, @Table, @Id, @Column để định nghĩa ánh xạ.
+                                 + Viết truy vấn động.
+
+        - Loi ich: + Giảm mã nguồn và dễ bảo trì do loại bỏ phần lớn mã SQL thủ công.
+                   + Tính bảo mật cao
+                   + Chuyển đổi dễ dàng giữa các cơ sở dữ liệu: ORM không phụ thuộc vào loại cơ sở dữ liệu
+
+Cơ chế hoạt động của ORM:
+                    1. Ánh xạ lớp và bảng thong qua @Entity
+                    2. Duy trì một phiên làm việc cho mỗi giao dịch với cơ sở dữ liệu
+                    3. Tự động chuyển đổi các thao tác này thành các câu lệnh SQL
+                    4. Sử dụng bộ nhớ đệm để tối ưu hóa truy vấn
+                    5. truy vấn dữ liệu liên quan mà không cần viết câu lệnh JOIN.
+
+        So sanh:
+
+                    Tiêu chí	        ORM (Hibernate, JPA)	                            JDBC thuần túy
+
+                    Tốc độ	            Nhanh hơn, dễ dàng nhờ tự động hóa CRUD	            Tốn thời gian, yêu cầu viết nhiều mã SQL
+
+                    Bảo trì	            Dễ bảo trì, mã ngắn gọn, tách biệt giữa             Khó bảo trì, dễ lỗi, mã SQL và mã logic xen lẫn
+                                        logic và SQL
+
+                    Hiệu suất	        Chậm hơn một chút do các lớp trừu tượng             Nhanh hơn do không có overhead từ ORM
+                                        và overhead của ORM
+
+                    Quản lý giao dịch	Hỗ trợ tự động quản lý giao dịch và phiên           Phải tự quản lý giao dịch và phiên làm việc
+                                        làm việc
+
+                    Khả năng mở rộng	Phù hợp với các ứng dụng CRUD,                      Tốt hơn cho các tác vụ xử lý lớn, truy vấn phức tạp
+                                        ít phù hợp cho tác vụ lớn
+
+                    Tính bảo mật	    An toàn với SQL Injection	                        Cần tự xử lý để tránh SQL Injection
+
+                    Độ linh hoạt	    Dễ dàng chuyển đổi giữa các loại cơ sở dữ liệu	    Phụ thuộc vào cơ sở dữ liệu cụ thể
+
+
+        Khi nao dung:
+
+                    + Dùng ORM khi ứng dụng cần CRUD cơ bản
+                    + Dùng JDBC thuần túy khi hiệu suất là ưu tiên hàng đầu
+
+========================================================================================================================
+
+Spring JPA không phải là một triển khai của ORM mà là một framework, nó dùng Hibernate implement JPA,
+           + Hibernate  định nghĩa một tập hợp các interface và quy tắc để ánh xạ để làm việc với ORM.
