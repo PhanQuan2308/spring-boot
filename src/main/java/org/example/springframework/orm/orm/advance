@@ -1,0 +1,133 @@
+Advance: trong Spring Boot có nghĩa là sử dụng các kỹ thuật và tính năng nâng cao của framework để tạo ra các ứng dụng phức tạp,
+            hiệu quả và linh hoạt hơn.
+
+            Vi du: Sử dụng JWT (JSON Web Token)
+                   Tích hợp OAuth2 và OpenID Connect
+                   Xây dựng Microservices với Spring Cloud
+                   Tối ưu hóa với Caching
+
+====================================================================================================================================
+
+Native Query: trong Spring Data JPA cho phép bạn viết các truy vấn SQL trực tiếp để tương tác với cơ sở dữ liệu
+
+            + Sử dụng Native Query với @Query Annotation:
+
+                    Vi du:
+                            1. Sử dụng Native Query để lấy dữ liệu cơ bản:
+                            public interface UserRepository extends JpaRepository<User, Long> {
+                               @Query(value = "SELECT * FROM users", nativeQuery = true)
+                               List<User> findAllUsers();
+                           }
+
+                            2. Sử dụng Native Query với tham số:
+                            @Query(value = "SELECT * FROM users WHERE email = :email", nativeQuery = true)
+                            User findUserByEmail(@Param("email") String email);
+
+
+                            3. Sử dụng EntityManager để Thực thi Native Query:
+                            @Repository
+                            public class UserRepositoryCustom {
+
+                                @Autowired
+                                private EntityManager entityManager;
+
+                                public List<User> findUsersWithStatus(String status) {
+                                    String sql = "SELECT * FROM users WHERE status = :status";
+                                    Query query = entityManager.createNativeQuery(sql, User.class);
+                                    query.setParameter("status", status);
+                                    return query.getResultList();
+                                }
+                            }
+
+                            4.  Sử dụng Native Query với Projection:
+                            public interface UserProjection {
+                                String getName();
+                                String getEmail();
+                            }
+
+                            @Query(value = "SELECT name, email FROM users WHERE status = :status", nativeQuery = true)
+                            List<UserProjection> findUsersByStatus(@Param("status") String status);
+
+
+                            5. Sử dụng Native Query với Cập nhật hoặc Xóa:
+                            @Modifying
+                            @Query(value = "UPDATE users SET status = :status WHERE id = :id", nativeQuery = true)
+                            int updateUserStatus(@Param("status") String status, @Param("id") Long id);
+
+====================================================================================================================================
+
+Specification: là một cách để xây dựng các truy vấn động và linh hoạt dựa trên các điều kiện tìm kiếm khác nhau mà không cần viết nhiều phương thức trong repository.
+
+
+                public class SearchCriteria {
+                    private String key;
+                    private String operation;
+                    private Object value;
+
+                    public SearchCriteria(String key, String operation, Object value) {
+                        this.key = key;
+                        this.operation = operation;
+                        this.value = value;
+                    }
+
+                }
+
+
+
+
+                public class UserSpecification implements Specification<User> {
+
+                    private SearchCriteria criteria;
+
+                    public UserSpecification(SearchCriteria criteria) {
+                        this.criteria = criteria;
+                    }
+
+                    @Override
+                    public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+                        if (criteria.getOperation().equalsIgnoreCase(">")) {
+                            return builder.greaterThanOrEqualTo(
+                              root.<String> get(criteria.getKey()), criteria.getValue().toString());
+                        } else if (criteria.getOperation().equalsIgnoreCase("<")) {
+                            return builder.lessThanOrEqualTo(
+                              root.<String> get(criteria.getKey()), criteria.getValue().toString());
+                        } else if (criteria.getOperation().equalsIgnoreCase(":")) {
+                            if (root.get(criteria.getKey()).getJavaType() == String.class) {
+                                return builder.like(
+                                  root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
+                            } else {
+                                return builder.equal(root.get(criteria.getKey()), criteria.getValue());
+                            }
+                        }
+                        return null;
+                    }
+                }
+
+                public List<User> searchUsers(String name, String status) {
+                    Specification<User> spec = Specification.where(new UserSpecification(new SearchCriteria("name", ":", name)))
+                                                            .and(new UserSpecification(new SearchCriteria("status", ":", status)));
+
+                    return userRepository.findAll(spec);
+                }
+
+
+Paging (phân trang) cho phép bạn giới hạn số lượng kết quả trả về trong mỗi lần truy vấn:
+
+                @GetMapping("/products")
+                    public ResponseEntity<Page<Product>> getProducts(
+                            @RequestParam(defaultValue = "0") int page,
+                            @RequestParam(defaultValue = "5") int size) {
+
+                        Pageable pageable = PageRequest.of(page, size);
+                        Page<Product> productPage = productRepository.findAll(pageable);
+
+                        return ResponseEntity.ok(productPage);
+                    }
+
+====================================================================================================================================
+
+Để lấy dữ liệu khi JOIN nhiều bảng trong JPA và chỉ lấy một số trường cụ thể từ mỗi bảng:
+
+                   + Dùng JPQL để lấy các trường cần thiết và ánh xạ kết quả vào một DTO.
+                   + Dùng Interface Projection: Tạo một interface để ánh xạ trực tiếp kết quả từ truy vấn vào các phương thức trong interface.
+                   + Sử dụng Native Query: Viết truy vấn SQL gốc nếu truy vấn quá phức tạp và cần tối ưu hiệu suất.
