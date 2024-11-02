@@ -1,0 +1,78 @@
+Authentication là quá trình xác minh danh tính của người dùng:
+       + Vi du: Khi dang nhap vao facebook thi he thong se xem ban la ai va được phep truy cap  vao trang ca nhan.
+
+=========================================================================================================================
+
+Authorization là quá trình cấp quyền truy cập cho người dùng:
+       + Vi du: Khi dang nhap xong thi he thong se xem ban có nhung quyen gi trong he thong va cho phep lam dieu do
+
+=========================================================================================================================
+
+JWT là một tiêu chuẩn mã hóa để truyền tải thông tin an toàn giữa các bên dưới dạng một chuỗi JSON:
+    + Header: chua thong tin ve loai token và loai ma hoa
+        - vi du: .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+
+    + Payload chứa thông tin chính về người dùng hoặc dữ liệu liên quan đến xác thực:
+        - vi du: .setSubject(username)
+                 .setIssuedAt(new Date())
+                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+
+
+    + Signature đảm bảo tính toàn vẹn của token, nghĩa là nó sẽ băm header và payload 1 lần nữa.
+        - .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+
+=========================================================================================================================
+
+Phân quyền bằng Annotation
+
+    + @Secured: Cho phép truy cập dựa trên vai trò người dùng.
+        - kích hoạt annotation bằng @EnableGlobalMethodSecurity trong cấu hình bảo mật.
+
+            @Configuration
+            @EnableWebSecurity
+            @EnableGlobalMethodSecurity(securedEnabled = true)
+            public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+            }
+
+
+    + @PreAuthorize và @PostAuthorize: Cho phép sử dụng biểu thức SpEL (Spring Expression Language) để kiểm tra điều kiện truy cập trước hoặc sau khi gọi phương thức.
+
+            @Service
+            public class ProductService {
+
+                @PreAuthorize("hasRole('ROLE_ADMIN')")
+                public void adminOnlyMethod() {
+                    // Chỉ ADMIN mới được truy cập
+                }
+
+                @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
+                public void userOrAdminMethod() {
+                    // Cả USER và ADMIN đều được truy cập
+                }
+
+                @PostAuthorize("returnObject.owner == authentication.name")
+                public Product getProduct() {
+                    // Chỉ cho phép truy cập nếu người dùng là chủ sở hữu của sản phẩm
+                    return new Product();
+                }
+            }
+
+
+            @Configuration
+            @EnableWebSecurity
+            public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+                @Override
+                protected void configure(HttpSecurity http) throws Exception {
+                    http.csrf().disable()
+                        .authorizeRequests()
+                        .antMatchers("/admin/**").hasRole("ADMIN") // Chỉ ADMIN mới truy cập được /admin/**
+                        .antMatchers("/user/**").hasAnyRole("USER", "ADMIN") // USER hoặc ADMIN mới truy cập được /user/**
+                        .antMatchers("/public/**").permitAll() // Mọi người đều truy cập được /public/**
+                        .anyRequest().authenticated(); // Các yêu cầu khác phải xác thực
+                }
+            }
+
+    + khi nao dung: - Dùng HttpSecurity để quản lý quyền truy cập chung cho các nhóm URL lớn
+                    - Dùng Annotation để kiểm soát chi tiết trong các phương thức cụ thể của lớp service, đặc biệt khi cần phân quyền dựa trên điều kiện hoặc dữ liệu động.
