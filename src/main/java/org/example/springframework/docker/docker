@@ -1,0 +1,5 @@
+- Docker là một nền tảng cung cấp khả năng đóng gói và triển khai ứng dụng trong các container.
+- Container là các gói ứng dụng chạy độc lập, chứa mọi thứ cần thiết để ứng dụng chạy ổn định trên các môi trường khác nhau, từ thư viện, dependency cho đến cấu hình hệ thống.
+- Tính di động: + Chạy ổn định trên mọi môi trường có Docker, giảm thiểu vấn đề "works on my machine"
+                + Quản lý môi trường dễ dàng
+                + Tiết kiệm tài nguyên: Container nhẹ hơn các máy ảo (VM)
