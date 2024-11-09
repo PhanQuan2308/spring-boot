@@ -1,0 +1,11 @@
+
+Hệ thống Microservice: là một kiến trúc phần mềm mà trong đó một ứng dụng lớn được chia thành nhiều service nhỏ, độc lập với nhau
+                       (gọi là microservices). Mỗi microservice chịu trách nhiệm cho một chức năng hoặc  một phần nhỏ trong ứng dụng, có thể được phát triển, triển khai,
+                       và mở rộng một cách độc lập. Các microservice thường giao tiếp với nhau qua các giao thức nhẹ như HTTP/REST hoặc gRPC và trao đổi dữ liệu qua JSON hoặc XML.
+
+
+- Uu diem: + Kha nang mo rong:  triển khai trên các máy chủ riêng biệt và mở rộng độc lập
+           + Dễ bảo trì và phát triển
+           + Khả năng chịu lỗi cao: Nếu một microservice gặp lỗi, các microservice khác vẫn có thể hoạt động.
+           + Khả năng sử dụng công nghệ đa dạng
+           + Phù hợp với tổ chức lớn và nhóm phát triển đa chức năng
